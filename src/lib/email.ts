@@ -46,8 +46,9 @@ export async function sendMail({ to, from, subject, html, replyTo }: SendArgs) {
 export function emailLayout(title: string, bodyHtml: string): string {
   return `<!doctype html><html><body style="margin:0;background:#faf7f1;font-family:Arial,Helvetica,sans-serif;color:#20211f;">
     <div style="max-width:560px;margin:0 auto;padding:24px;">
-      <div style="background:#2b2620;color:#faf7f1;padding:16px 20px;border-radius:8px 8px 0 0;font-size:18px;font-weight:bold;">
-        Majestic Ally Wholesale
+      <div style="background:#ffffff;border:1px solid #e6e0d5;border-bottom:none;border-radius:8px 8px 0 0;padding:20px 20px 14px;text-align:center;">
+        <img src="https://majesticallyproducts.com/cdn/shop/files/Logo_PNG.png?v=1721900841&width=400" alt="Majestic Ally" style="height:42px;width:auto;" />
+        <div style="margin-top:6px;font-size:11px;font-weight:bold;letter-spacing:0.18em;text-transform:uppercase;color:#b07a3c;">Wholesale</div>
       </div>
       <div style="background:#ffffff;border:1px solid #e6e0d5;border-top:none;border-radius:0 0 8px 8px;padding:24px;">
         <h1 style="font-size:18px;margin:0 0 16px;">${title}</h1>

@@ -17,23 +17,24 @@ export function Logo({
   light?: boolean;
 }) {
   if (light) {
-    // Dark background — wordmark in cream.
+    // Dark background — show the real logo on a cream chip so the colored
+    // emblem stays legible, with the "Wholesale" label beside it.
     return (
       <Link
         href={href}
         className={cn("inline-flex items-center gap-2.5", className)}
         aria-label="Majestic Ally — home"
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-md border border-cream/40 font-serif text-lg font-semibold text-cream">
-          MA
+        <span className="inline-flex items-center rounded-lg bg-cream px-2.5 py-1.5">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={LOGO_SRC}
+            alt="Majestic Ally"
+            className="h-7 w-auto object-contain"
+          />
         </span>
-        <span className="leading-tight">
-          <span className="block font-serif text-lg font-semibold tracking-tight text-cream">
-            Majestic Ally
-          </span>
-          <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-cream/70">
-            Wholesale
-          </span>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-cream/80">
+          Wholesale
         </span>
       </Link>
     );

@@ -28,6 +28,10 @@ export const WHOLESALE_PCT = 40;
 
 export const DEFAULT_TIERS: Tier[] = [{ minCents: 0, pct: WHOLESALE_PCT }];
 
+// TEMPORARY: free shipping on every order until shipping rates are configured.
+// Set to false to resume charging per the Admin → Settings shipping amounts.
+export const FREE_SHIPPING_EVERYWHERE = true;
+
 /** The discount percent that applies at a given MSRP subtotal. */
 export function getTierPct(msrpSubtotalCents: number, tiers: Tier[] = DEFAULT_TIERS): number {
   const sorted = [...tiers].sort((a, b) => a.minCents - b.minCents);
@@ -131,7 +135,11 @@ export function computeCart(
   );
 
   const discountCents = msrpSubtotalCents - wholesaleSubtotalCents;
-  const freeShipping = msrpSubtotalCents >= freeShipThresholdCents;
+  // TEMPORARY: shipping is free on every order until shipping rates are set up.
+  // To start charging, set FREE_SHIPPING_EVERYWHERE = false below and set the
+  // "Free shipping at" / "Flat shipping" amounts in Admin → Settings.
+  const freeShipping =
+    FREE_SHIPPING_EVERYWHERE || msrpSubtotalCents >= freeShipThresholdCents;
   const shippingCents = freeShipping ? 0 : flatShippingCents;
   const totalCents = wholesaleSubtotalCents + shippingCents;
 

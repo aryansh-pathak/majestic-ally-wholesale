@@ -98,7 +98,7 @@ export default async function HomePage() {
               <TrustItem
                 icon={<Truck className="h-5 w-5" />}
                 title="Free freight"
-                body="Free shipping on qualifying wholesale orders (continental US)."
+                body="Free shipping on all wholesale orders (continental US)."
               />
               <TrustItem
                 icon={<ShieldCheck className="h-5 w-5" />}
