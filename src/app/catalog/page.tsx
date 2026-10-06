@@ -92,10 +92,11 @@ export default async function CatalogPage({
         {/* Category nav */}
         {!searching && (
           <div className="sticky top-16 z-30 -mx-4 mb-6 border-y border-brand-100 bg-cream/95 px-4 py-2 backdrop-blur sm:-mx-6 sm:px-6">
-            <div className="flex flex-wrap gap-2">
+            {/* Single scrollable row on phones; wraps on larger screens. */}
+            <div className="flex gap-2 overflow-x-auto whitespace-nowrap [-ms-overflow-style:none] [scrollbar-width:none] sm:flex-wrap sm:overflow-visible sm:whitespace-normal [&::-webkit-scrollbar]:hidden">
               <Link
                 href="/catalog"
-                className={`badge border px-3 py-1.5 text-sm transition-colors ${
+                className={`badge shrink-0 border px-3 py-1.5 text-sm transition-colors ${
                   !sp.category
                     ? "border-brand-700 bg-brand-700 text-cream"
                     : "border-brand-200 bg-white text-brand-800 hover:border-brand-400"
@@ -107,7 +108,7 @@ export default async function CatalogPage({
                 <Link
                   key={c}
                   href={`/catalog?category=${encodeURIComponent(c)}`}
-                  className={`badge border px-3 py-1.5 text-sm transition-colors ${
+                  className={`badge shrink-0 border px-3 py-1.5 text-sm transition-colors ${
                     sp.category === c
                       ? "border-brand-700 bg-brand-700 text-cream"
                       : "border-brand-200 bg-white text-brand-800 hover:border-brand-400"

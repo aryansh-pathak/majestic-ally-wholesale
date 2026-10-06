@@ -4,27 +4,83 @@ import {
   ShieldCheck,
   Truck,
   Tag,
-  PackageCheck,
+  ExternalLink,
 } from "lucide-react";
 import { PublicHeader } from "@/components/public-header";
 import { Footer } from "@/components/footer";
 import { getSettings } from "@/lib/settings";
 
-// Public marketing page — no gated pricing here. The nine product lines below
-// are editable marketing copy (Admin → Settings can be extended to manage them).
+const CDN = "https://cdn.shopify.com/s/files/1/0405/1759/9398";
+
+// Real catalog imagery + the chapter taglines straight from the 2026 catalog.
 const PRODUCT_LINES = [
-  { name: "Hay Feeders, Nets & Bags", note: "Slow-feed nets & bags — our best-moving line" },
-  { name: "Halters & Fleece", note: "Nylon halters with fleece-lined comfort" },
-  { name: "Headstalls, Breast Collars & Bridles", note: "Nylon & hand-tooled leather, matched sets" },
-  { name: "Reins, Leads, Ties & Stable", note: "Everyday barn and stable essentials" },
-  { name: "Saddle Covers & Bags", note: "Protective covers and carry bags" },
-  { name: "Blankets, Stirrups, Fenders & Pads", note: "Saddle pads and riding hardware" },
-  { name: "Cinches, Girths & Accessories", note: "Western cinches and girth accessories" },
-  { name: "Sheets, Masks & Boots", note: "Turnout sheets, fly masks, and boots" },
-  { name: "Dog Collars", note: "Hand-tooled western collars, XS–XL" },
+  {
+    name: "Hay Feeders, Nets & Bags",
+    note: "Slow-feed technology that stretches every bale — the line your customers come back for.",
+    img: `${CDN}/products/MA-0903_BlackAll8colormain.jpg?v=1619365368`,
+  },
+  {
+    name: "Halters & Fleece",
+    note: "From everyday nylon to hand-tooled leather — a halter for every horse in the barn.",
+    img: `${CDN}/files/1022-Main2.jpg?v=1744959214`,
+  },
+  {
+    name: "Headstalls, Breast Collars & Bridles",
+    note: "Hand-tooled leather and matched sets that anchor the western wall.",
+    img: `${CDN}/files/1008BCandHS1.jpg?v=1744869729`,
+  },
+  {
+    name: "Reins, Leads, Ties & Stable",
+    note: "Handmade leads and reins, the ties that hold it together — and the details every stall needs.",
+    img: `${CDN}/files/0920_Brown_main.jpg?v=1744317213`,
+  },
+  {
+    name: "Saddle Covers & Bags",
+    note: "Protection and carry solutions for tack, gear and laundry on the move.",
+    img: `${CDN}/files/0958_Main_1.jpg?v=1744228588`,
+  },
+  {
+    name: "Blankets, Stirrups, Fenders & Pads",
+    note: "From the blanket to the stirrup — everything between horse and rider.",
+    img: `${CDN}/files/4ad80f35-4609-5b1d-a07c-956f9a87ff87.jpg?v=1748414665`,
+  },
+  {
+    name: "Cinches, Girths & Accessories",
+    note: "The fit that matters most, in neoprene, fleece and mesh.",
+    img: `${CDN}/products/062A0414.jpg?v=1700672451`,
+  },
+  {
+    name: "Blankets, Sheets, Masks & Boots",
+    note: "Season-round protection, from turnout to fly gear to boots.",
+    img: `${CDN}/files/Tur02.jpg?v=1700674830`,
+  },
+  {
+    name: "Dog Collars",
+    note: "Western craftsmanship, sized for the dogs — hand-tooled, padded, XS to XL.",
+    img: `${CDN}/files/1005-1.jpg?v=1744781880`,
+  },
 ];
 
-// Reads editable settings from the DB at request time.
+// Hero showcase pieces (real catalog photography).
+const HERO_FEATURE = {
+  img: `${CDN}/files/1008BCandHS1.jpg?v=1744869729`,
+  label: "Tooled Turquoise Headstall & Breast Collar Set",
+};
+const HERO_TILES = [
+  { img: `${CDN}/files/7838b751-2b63-506e-a5f6-69f3d55d8e5d.jpg?v=1748242120`, label: "Hand-tooled sunflower headstall" },
+  { img: `${CDN}/products/MA-0903_BlackAll8colormain.jpg?v=1619365368`, label: "Slow-feed hay net — top seller" },
+  { img: `${CDN}/files/1005-1.jpg?v=1744781880`, label: "Western leather dog collar" },
+];
+
+// Where the brand already sells, with real storefront links.
+const CHANNEL_LINKS: Record<string, string> = {
+  Amazon: "https://www.amazon.com/stores/MajesticAlly",
+  "Walmart Marketplace": "https://www.walmart.com/seller/101425108",
+  Walmart: "https://www.walmart.com/seller/101425108",
+  Etsy: "https://www.etsy.com/shop/MajesticAllyProducts",
+  eBay: "https://www.ebay.com/str/amayinternational",
+};
+
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
@@ -44,7 +100,7 @@ export default async function HomePage() {
             }}
             aria-hidden
           />
-          <div className="container-page relative grid gap-10 py-20 lg:grid-cols-2 lg:items-center lg:py-28">
+          <div className="container-page relative grid gap-10 py-16 lg:grid-cols-2 lg:items-center lg:py-24">
             <div>
               <span className="badge bg-saddle/20 text-saddle-light">
                 Wholesale · Retailers & Resellers
@@ -67,23 +123,35 @@ export default async function HomePage() {
                 </Link>
               </div>
               <p className="mt-4 text-sm text-cream/50">
-                Approved retailers see live wholesale pricing across 140+ styles.
+                Over 140 styles — most in a full range of colors. Approved
+                retailers see live wholesale pricing and free shipping on every
+                order.
               </p>
             </div>
 
-            {/* Hero image placeholder */}
-            <div className="relative">
-              <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-cream/15 bg-gradient-to-br from-brand-700 to-brand-800 shadow-2xl">
-                <div className="flex h-full flex-col items-center justify-center gap-2 text-center text-cream/50">
-                  <PackageCheck className="h-10 w-10" />
-                  <span className="text-sm font-medium">
-                    [ Placeholder — add your brand / product hero image ]
-                  </span>
-                  <span className="text-xs">
-                    Drop a photo in /public and swap this block
-                  </span>
-                </div>
-              </div>
+            {/* Hero product showcase — real catalog photography */}
+            <div className="grid grid-cols-2 gap-3 sm:gap-4">
+              <figure className="col-span-2 overflow-hidden rounded-2xl bg-white shadow-2xl">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={HERO_FEATURE.img}
+                  alt={HERO_FEATURE.label}
+                  className="aspect-[16/10] w-full object-contain p-4"
+                />
+              </figure>
+              {HERO_TILES.map((t) => (
+                <figure
+                  key={t.label}
+                  className="overflow-hidden rounded-xl bg-white shadow-lg"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={t.img}
+                    alt={t.label}
+                    className="aspect-square w-full object-contain p-3"
+                  />
+                </figure>
+              ))}
             </div>
           </div>
 
@@ -93,12 +161,12 @@ export default async function HomePage() {
               <TrustItem
                 icon={<Tag className="h-5 w-5" />}
                 title="Volume pricing"
-                body="Tiered discounts up to 40% off MSRP for approved accounts."
+                body="Up to 40% off MSRP for approved wholesale accounts."
               />
               <TrustItem
                 icon={<Truck className="h-5 w-5" />}
                 title="Free freight"
-                body="Free shipping on all wholesale orders (continental US)."
+                body="Free shipping on every wholesale order (continental US)."
               />
               <TrustItem
                 icon={<ShieldCheck className="h-5 w-5" />}
@@ -121,14 +189,28 @@ export default async function HomePage() {
               single supplier.
             </p>
           </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {PRODUCT_LINES.map((line) => (
-              <div key={line.name} className="card p-5">
-                <h3 className="text-lg font-semibold text-brand-800">
-                  {line.name}
-                </h3>
-                <p className="mt-1 text-sm text-brand-800/70">{line.note}</p>
-              </div>
+              <Link
+                key={line.name}
+                href={`/catalog?category=${encodeURIComponent(line.name)}`}
+                className="card group flex flex-col overflow-hidden transition-shadow hover:shadow-md"
+              >
+                <div className="aspect-[4/3] overflow-hidden bg-white">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={line.img}
+                    alt={line.name}
+                    className="h-full w-full object-contain p-4 transition-transform duration-300 group-hover:scale-105"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col p-5">
+                  <h3 className="text-lg font-semibold text-brand-800 group-hover:text-brand-600">
+                    {line.name}
+                  </h3>
+                  <p className="mt-1 text-sm text-brand-800/70">{line.note}</p>
+                </div>
+              </Link>
             ))}
           </div>
         </section>
@@ -136,10 +218,13 @@ export default async function HomePage() {
         {/* Story */}
         <section id="story" className="bg-white py-20">
           <div className="container-page grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center">
-            <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-brand-100 bg-brand-50">
-              <div className="flex h-full items-center justify-center p-6 text-center text-brand-300">
-                [ Placeholder — brand / workshop photo ]
-              </div>
+            <div className="aspect-[4/3] overflow-hidden rounded-2xl border border-brand-100 bg-white">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`${CDN}/files/7838b751-2b63-506e-a5f6-69f3d55d8e5d.jpg?v=1748242120`}
+                alt="Hand-tooled leather headstall"
+                className="h-full w-full object-contain p-6"
+              />
             </div>
             <div>
               <span className="badge bg-brand-100 text-brand-700">
@@ -151,10 +236,6 @@ export default async function HomePage() {
               <p className="mt-4 whitespace-pre-line leading-relaxed text-brand-800/80">
                 {settings.storyMarkdown.replace(/\*\*/g, "")}
               </p>
-              <p className="mt-4 text-sm text-brand-800/60">
-                Edit this copy any time from <strong>Admin → Settings</strong> —
-                no code required.
-              </p>
             </div>
           </div>
         </section>
@@ -165,18 +246,35 @@ export default async function HomePage() {
             Where you already see us
           </h2>
           <p className="mt-3 max-w-2xl text-brand-800/80">
-            Majestic Ally products sell across major marketplaces and specialty
+            Majestic Ally sells across major marketplaces and specialty
             channels. Carry the line in your store with wholesale terms.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            {settings.whereWeSell.map((channel) => (
-              <span
-                key={channel}
-                className="badge border border-brand-200 bg-white px-4 py-2 text-sm text-brand-800"
-              >
-                {channel}
-              </span>
-            ))}
+            {settings.whereWeSell.map((channel) => {
+              const url = CHANNEL_LINKS[channel];
+              if (url) {
+                return (
+                  <a
+                    key={channel}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="badge inline-flex items-center gap-1.5 border border-brand-200 bg-white px-4 py-2 text-sm text-brand-800 transition-colors hover:border-saddle hover:text-saddle-dark"
+                  >
+                    {channel}
+                    <ExternalLink className="h-3.5 w-3.5 opacity-60" />
+                  </a>
+                );
+              }
+              return (
+                <span
+                  key={channel}
+                  className="badge border border-brand-200 bg-white px-4 py-2 text-sm text-brand-800"
+                >
+                  {channel}
+                </span>
+              );
+            })}
           </div>
         </section>
 

@@ -24,7 +24,7 @@ const DEFAULTS: AppSettings = {
   heroSubtext:
     "Majestic Ally supplies retailers and resellers with 140+ styles of equestrian gear and hand-tooled pet accessories. Log in to see your wholesale pricing.",
   storyMarkdown:
-    "**[Placeholder — your brand story goes here.]** Tell retailers who Majestic Ally is, what you make, and why buyers trust your line. Edit this any time from Admin → Settings.",
+    "Majestic Ally is the wholesale line of Amay International LLC, based in Naperville, Illinois. We manufacture equestrian tack, stable essentials, and western pet goods — over 140 styles, most in a full range of colors — from everyday slow-feed hay nets to hand-tooled leather headstalls and matched show sets.\n\nOur slow-feeder line is the one barns reorder season after season, and our hand-tooled leather brings real western craftsmanship to headstalls, breast collars, saddle bags, and dog collars alike. Riders already know us on Amazon, Walmart, Etsy, and eBay — now we bring the full collection to retailers at wholesale, with free shipping on every order.",
   whereWeSell: [
     "Amazon",
     "Walmart Marketplace",
@@ -54,7 +54,12 @@ export async function getSettings(): Promise<AppSettings> {
     emailFrom: row.emailFrom || DEFAULTS.emailFrom,
     heroHeadline: row.heroHeadline || DEFAULTS.heroHeadline,
     heroSubtext: row.heroSubtext || DEFAULTS.heroSubtext,
-    storyMarkdown: row.storyMarkdown || DEFAULTS.storyMarkdown,
+    // Ignore the seeded placeholder copy so the real story shows until the
+    // owner writes their own in Admin → Settings.
+    storyMarkdown:
+      row.storyMarkdown && !row.storyMarkdown.includes("[Placeholder")
+        ? row.storyMarkdown
+        : DEFAULTS.storyMarkdown,
     whereWeSell: (row.whereWeSell as string[]) || DEFAULTS.whereWeSell,
     freeShipThresholdCents:
       row.freeShipThresholdCents ?? DEFAULTS.freeShipThresholdCents,
