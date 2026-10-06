@@ -42,6 +42,16 @@ const config: Config = {
       maxWidth: {
         content: "1200px",
       },
+      keyframes: {
+        kenburns: {
+          "0%": { transform: "scale(1)" },
+          "100%": { transform: "scale(1.09)" },
+        },
+      },
+      animation: {
+        // Slow zoom on the active hero image; alternates so it eases back.
+        kenburns: "kenburns 6s ease-in-out infinite alternate",
+      },
     },
   },
   plugins: [],
