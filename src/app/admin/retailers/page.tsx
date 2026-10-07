@@ -63,7 +63,11 @@ export default async function AdminRetailersPage() {
                     )}
                   </td>
                   <td className="px-4 py-3">
-                    <RetailerActions id={r.id} status={r.status} />
+                    <RetailerActions
+                      id={r.id}
+                      status={r.status}
+                      businessName={r.businessName}
+                    />
                   </td>
                 </tr>
               ))

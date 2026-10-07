@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { PublicHeader } from "@/components/public-header";
 import { Footer } from "@/components/footer";
+import { HeroShowcase } from "@/components/hero-showcase";
 import { getSettings } from "@/lib/settings";
 
 const CDN = "https://cdn.shopify.com/s/files/1/0405/1759/9398";
@@ -61,20 +62,19 @@ const PRODUCT_LINES = [
   },
 ];
 
-// Hero showcase pieces (real catalog photography).
-const HERO_FEATURE = {
-  img: `${CDN}/files/1008BCandHS1.jpg?v=1744869729`,
-  label: "Tooled Turquoise Headstall & Breast Collar Set",
-};
-const HERO_TILES = [
-  { img: `${CDN}/files/7838b751-2b63-506e-a5f6-69f3d55d8e5d.jpg?v=1748242120`, label: "Hand-tooled sunflower headstall" },
-  { img: `${CDN}/products/MA-0903_BlackAll8colormain.jpg?v=1619365368`, label: "Slow-feed hay net — top seller" },
-  { img: `${CDN}/files/1005-1.jpg?v=1744781880`, label: "Western leather dog collar" },
+// Hero showcase — rotates through real catalog photography with a slow zoom.
+const HERO_SLIDES = [
+  { img: `${CDN}/files/1008BCandHS1.jpg?v=1744869729`, label: "Tooled Turquoise Headstall & Breast Collar Set" },
+  { img: `${CDN}/files/7838b751-2b63-506e-a5f6-69f3d55d8e5d.jpg?v=1748242120`, label: "Hand-Tooled Sunflower Leather Headstall" },
+  { img: `${CDN}/products/MA-0903_BlackAll8colormain.jpg?v=1619365368`, label: 'Slow-Feed 42" Hay Net — our top seller' },
+  { img: `${CDN}/files/0958_Main_1.jpg?v=1744228588`, label: "Insulated Saddle Bag with Cooler & Bottle Holder" },
+  { img: `${CDN}/files/1022-Main2.jpg?v=1744959214`, label: "Designer Bronc Halter, Hand-Tooled Leather Nose" },
+  { img: `${CDN}/files/1005-1.jpg?v=1744781880`, label: "Western Hand-Tooled Leather Dog Collar" },
 ];
 
 // Where the brand already sells, with real storefront links.
 const CHANNEL_LINKS: Record<string, string> = {
-  Amazon: "https://www.amazon.com/stores/MajesticAlly",
+  Amazon: "https://www.amazon.com/stores/MajesticAlly/page/3C407C0F-6E05-4811-BEC8-72FA5B8DAE76",
   "Walmart Marketplace": "https://www.walmart.com/seller/101425108",
   Walmart: "https://www.walmart.com/seller/101425108",
   Etsy: "https://www.etsy.com/shop/MajesticAllyProducts",
@@ -129,30 +129,8 @@ export default async function HomePage() {
               </p>
             </div>
 
-            {/* Hero product showcase — real catalog photography */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              <figure className="col-span-2 overflow-hidden rounded-2xl bg-white shadow-2xl">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={HERO_FEATURE.img}
-                  alt={HERO_FEATURE.label}
-                  className="aspect-[16/10] w-full object-contain p-4"
-                />
-              </figure>
-              {HERO_TILES.map((t) => (
-                <figure
-                  key={t.label}
-                  className="overflow-hidden rounded-xl bg-white shadow-lg"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={t.img}
-                    alt={t.label}
-                    className="aspect-square w-full object-contain p-3"
-                  />
-                </figure>
-              ))}
-            </div>
+            {/* Hero product showcase — animated real catalog photography */}
+            <HeroShowcase slides={HERO_SLIDES} />
           </div>
 
           {/* Trust bar */}

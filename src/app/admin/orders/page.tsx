@@ -1,6 +1,7 @@
 import { listAllOrders } from "@/lib/admin";
 import { formatCents } from "@/lib/utils";
 import { OrderStatusSelect } from "./order-status-select";
+import { OrderDelete } from "./order-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -24,12 +25,13 @@ export default async function AdminOrdersPage() {
               <th className="px-4 py-3 text-center">Discount</th>
               <th className="px-4 py-3 text-right">Total</th>
               <th className="px-4 py-3">Status</th>
+              <th className="px-4 py-3 text-right">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-brand-100">
             {orders.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-4 py-8 text-center text-brand-800/50">
+                <td colSpan={7} className="px-4 py-8 text-center text-brand-800/50">
                   No orders yet.
                 </td>
               </tr>
@@ -56,6 +58,9 @@ export default async function AdminOrdersPage() {
                   </td>
                   <td className="px-4 py-3">
                     <OrderStatusSelect id={o.id} status={o.status} />
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <OrderDelete id={o.id} />
                   </td>
                 </tr>
               ))

@@ -40,23 +40,63 @@ export async function getDashboardStats() {
   };
 }
 
-export async function listAllProducts() {
+export async function listAllProducts(
+  opts: { q?: string; category?: string } = {}
+) {
   const db = await getDb();
   const products = await db
     .select()
     .from(schema.products)
     .orderBy(desc(schema.products.totalInventory));
   const variants = await db.select().from(schema.variants);
-  return products.map((p) => {
+
+  const q = (opts.q ?? "").trim().toLowerCase();
+  const qDigits = q.replace(/[^0-9]/g, "");
+  const category = (opts.category ?? "").trim();
+
+  let rows = products.map((p) => {
     const vs = variants.filter((v) => v.productId === p.id);
     const prices = vs.map((v) => v.retailCents).filter((n) => n > 0);
     return {
       ...p,
+      _skus: vs.map((v) => (v.sku ?? "").toLowerCase()),
       variantCount: vs.length,
       retailMinCents: prices.length ? Math.min(...prices) : 0,
       hasOverride: vs.some((v) => v.wholesaleOverrideCents != null),
     };
   });
+
+  if (category) rows = rows.filter((p) => p.category === category);
+
+  if (q) {
+    rows = rows.filter((p) => {
+      if (p.title.toLowerCase().includes(q)) return true;
+      if ((p.baseSku ?? "").toLowerCase().includes(q)) return true;
+      if (p._skus.some((s) => s.includes(q))) return true;
+      // Forgiving numeric match: "903" finds MA-0903.
+      if (
+        qDigits &&
+        p._skus.some((s) => s.replace(/[^0-9]/g, "").includes(qDigits))
+      )
+        return true;
+      return false;
+    });
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  return rows.map(({ _skus, ...rest }) => rest);
+}
+
+/** Distinct product categories, for the admin filter dropdown. */
+export async function listAdminCategories(): Promise<string[]> {
+  const db = await getDb();
+  const rows = await db
+    .selectDistinct({ category: schema.products.category })
+    .from(schema.products);
+  return rows
+    .map((r) => r.category)
+    .filter((c): c is string => !!c)
+    .sort((a, b) => a.localeCompare(b));
 }
 
 export async function getProductForEdit(id: number) {

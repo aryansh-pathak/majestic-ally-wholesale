@@ -16,3 +16,13 @@ export async function setOrderStatus(
   revalidatePath("/admin");
   return { ok: true };
 }
+
+/** Permanently delete an order (its line items cascade). Cannot be undone. */
+export async function deleteOrder(id: number): Promise<{ ok: boolean }> {
+  await requireOwner();
+  const db = await getDb();
+  await db.delete(schema.orders).where(eq(schema.orders.id, id));
+  revalidatePath("/admin/orders");
+  revalidatePath("/admin");
+  return { ok: true };
+}

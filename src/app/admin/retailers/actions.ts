@@ -105,3 +105,33 @@ export async function setAccountDiscount(id: number, pct: number | null) {
   revalidatePath("/admin/retailers");
   return { ok: true };
 }
+
+/**
+ * Permanently delete a retailer account and everything tied to it (their
+ * orders + order items, password-reset tokens, 2FA secret). Owner accounts
+ * are protected. This cannot be undone.
+ */
+export async function deleteRetailer(
+  id: number
+): Promise<{ ok: boolean; message?: string }> {
+  await requireOwner();
+  const db = await getDb();
+  const rows = await db
+    .select({ role: schema.users.role })
+    .from(schema.users)
+    .where(eq(schema.users.id, id))
+    .limit(1);
+  if (!rows[0]) return { ok: false, message: "Account not found." };
+  if (rows[0].role === "owner")
+    return { ok: false, message: "Owner accounts can't be deleted." };
+
+  // Remove their orders first (order_items cascade on order delete); the
+  // user's reset tokens and TOTP secret cascade when the user is deleted.
+  await db.delete(schema.orders).where(eq(schema.orders.userId, id));
+  await db.delete(schema.users).where(eq(schema.users.id, id));
+
+  revalidatePath("/admin/retailers");
+  revalidatePath("/admin");
+  revalidatePath("/admin/orders");
+  return { ok: true };
+}
