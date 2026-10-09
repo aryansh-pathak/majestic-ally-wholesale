@@ -1,0 +1,38 @@
+flowchart TB
+    subgraph Client["Browser"]
+        Public["Public marketing site<br/>(no pricing exposed)"]
+        Portal["Retailer portal<br/>(gated catalog, cart, checkout)"]
+        Admin["Owner admin console"]
+    end
+
+    subgraph Vercel["Vercel — Next.js 15 (serverless)"]
+        MW["Edge Middleware<br/>route gating (auth.config.ts)"]
+        RSC["Server Components<br/>render pages server-side"]
+        SA["Server Actions<br/>all mutations (type-safe RPC)"]
+        API["Route Handlers<br/>/api/auth · /api/catalog/search<br/>/api/stripe/webhook · /api/cron/sync"]
+        Cron["Vercel Cron (nightly)"]
+    end
+
+    subgraph Data["Data & external services"]
+        Neon[("Neon Postgres<br/>via postgres.js")]
+        Stripe["Stripe<br/>hosted Checkout + Webhook"]
+        Resend["Resend<br/>transactional email"]
+        Shopify["Shopify Admin<br/>GraphQL API"]
+    end
+
+    Public --> MW
+    Portal --> MW
+    Admin --> MW
+    MW --> RSC
+    RSC -->|read catalog/settings| Neon
+    RSC --> SA
+    SA -->|read/write| Neon
+    SA -->|create session| Stripe
+    SA -->|send mail| Resend
+    API -->|order writes| Neon
+    API -->|verify webhook| Stripe
+    Cron --> API
+    API -->|sync products| Shopify
+
+    classDef db fill:#2b2620,stroke:#b07a3c,color:#faf9f6
+    class Neon db
